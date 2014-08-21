@@ -2,6 +2,7 @@ package br.com.caelum.agiletickets.models;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -13,8 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
+import org.joda.time.Weeks;
 
 @Entity
 public class Espetaculo {
@@ -97,8 +101,45 @@ public class Espetaculo {
      * Repare que a data da primeira sessao é sempre a data inicial.
      */
 	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
-		// ALUNO: Não apague esse metodo. Esse sim será usado no futuro! ;)
-		return null;
+		List<Sessao> listaSessao = new ArrayList<Sessao>();
+
+		if(periodicidade == Periodicidade.DIARIA){
+			Days dias = Days.daysBetween(inicio, fim);
+			for (int i = 0; i <= dias.getDays(); i++) {
+				LocalDate inicio2 = inicio.plusDays(i);
+				
+				Sessao sessao = new Sessao();
+				
+				LocalDateTime inicioSessao = new LocalDateTime(inicio2.getYear(), inicio2.getMonthOfYear(), 
+						inicio2.getDayOfMonth(), horario.getHourOfDay(), 
+						horario.getMinuteOfHour());
+	
+				sessao.setInicio(inicioSessao.toDateTime());
+				sessao.setDuracaoEmMinutos(60 * 3);
+				listaSessao.add(sessao);
+			}
+		} else {
+			
+			Weeks semanas = Weeks.weeksBetween(inicio, fim);
+			
+			for (int i = 0; i <= semanas.getWeeks(); i++) {
+				LocalDate inicio2 = inicio.plusDays(i + 6);
+				
+				Sessao sessao = new Sessao();
+				
+				LocalDateTime inicioSessao = new LocalDateTime(inicio2.getYear(), inicio2.getMonthOfYear(), 
+						inicio2.getDayOfMonth(), horario.getHourOfDay(), 
+						horario.getMinuteOfHour());
+	
+				sessao.setInicio(inicioSessao.toDateTime());
+				sessao.setDuracaoEmMinutos(60 * 3);
+				listaSessao.add(sessao);
+			}
+			
+		}
+		
+
+		return listaSessao;
 	}
 	
 	public boolean Vagas(int qtd, int min)

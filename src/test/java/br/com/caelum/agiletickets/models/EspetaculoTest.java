@@ -3,6 +3,12 @@ package br.com.caelum.agiletickets.models;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class EspetaculoTest {
@@ -79,6 +85,78 @@ public class EspetaculoTest {
 		sessao.setIngressosReservados(quantidade);
 
 		return sessao;
+	}
+	
+	@Test
+	public void permiteCriarUmaSessaoDeUmDia() throws Exception {
+		LocalDate inicio = new LocalDate(2014, 8, 10);
+		LocalDate fim = new LocalDate(2014, 8, 10);
+		LocalTime horario = new LocalTime(20, 0);
+		 
+		Espetaculo espetaculo = new Espetaculo();
+		List<Sessao> sessoesCriadas = espetaculo.criaSessoes(inicio, fim, horario, Periodicidade.DIARIA);
+		
+		Assert.assertEquals(1, sessoesCriadas.size());
+	}
+	
+	@Test
+	public void deveCriarDuasSessoesParaUmPeriodoDeDoisDias() throws Exception {
+		
+		LocalDate inicio = new LocalDate(2014, 8, 10);
+		LocalDate fim = new LocalDate(2014, 8, 11);
+		LocalTime horario = new LocalTime(20, 0);
+		
+		Espetaculo espetaculo = new Espetaculo();
+		List<Sessao> sessoesCriadas = espetaculo.criaSessoes(inicio, fim, horario, Periodicidade.DIARIA);
+		
+		Assert.assertEquals(2, sessoesCriadas.size());
+		
+	}
+	
+	@Test
+	public void deveCriarUmaSessaoParaCadaDia() throws Exception {
+		
+		LocalDate inicio = new LocalDate(2014, 8, 10);
+		LocalDate fim = inicio.plusDays(3);
+		LocalTime horario = new LocalTime(20, 0);
+		
+		Espetaculo espetaculo = new Espetaculo();
+		List<Sessao> sessoesCriadas = espetaculo.criaSessoes(inicio, fim, horario, Periodicidade.DIARIA);
+		
+		Assert.assertEquals(4, sessoesCriadas.size());
+		
+	}
+	
+	@Test
+	public void deveCriarUmaSessaoParaCadaDiaCorreto() throws Exception {
+		
+		LocalTime horarioSessao = new LocalTime(20, 0);
+		LocalDate primeiraSessao = new LocalDate(2014, 8, 10);
+		LocalDate segundaSessao = new LocalDate(2014, 8, 11);
+		LocalDate terceiraSessao = new LocalDate(2014, 8, 12);
+		LocalDate quartaSessao = new LocalDate(2014, 8, 13);
+		
+		Espetaculo espetaculo = new Espetaculo();
+		List<Sessao> sessoesCriadas = espetaculo.criaSessoes(primeiraSessao, quartaSessao, horarioSessao, Periodicidade.DIARIA);
+		
+		Assert.assertEquals(primeiraSessao, sessoesCriadas.get(0).getInicio().toLocalDate());
+		Assert.assertEquals(segundaSessao, sessoesCriadas.get(1).getInicio().toLocalDate());
+		Assert.assertEquals(terceiraSessao, sessoesCriadas.get(2).getInicio().toLocalDate());
+		Assert.assertEquals(quartaSessao, sessoesCriadas.get(3).getInicio().toLocalDate());
+	}
+	
+	@Test
+	public void deveCriarUmaSessaoPorSemana(){
+		
+		LocalDate inicio = new LocalDate(2014, 8, 10);
+		LocalDate fim = inicio.plusDays(13);
+		LocalTime horario = new LocalTime(20, 0);
+		
+		Espetaculo espetaculo = new Espetaculo();
+		List<Sessao> sessoesCriadas = espetaculo.criaSessoes(inicio, fim, horario, Periodicidade.SEMANAL);
+		
+		Assert.assertEquals(2, sessoesCriadas.size());
+		
 	}
 	
 }
