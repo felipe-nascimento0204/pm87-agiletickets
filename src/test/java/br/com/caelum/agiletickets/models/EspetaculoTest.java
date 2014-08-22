@@ -132,24 +132,22 @@ public class EspetaculoTest {
 		
 		LocalTime horarioSessao = new LocalTime(20, 0);
 		LocalDate primeiraSessao = new LocalDate(2014, 8, 10);
-		LocalDate segundaSessao = new LocalDate(2014, 8, 11);
-		LocalDate terceiraSessao = new LocalDate(2014, 8, 12);
 		LocalDate quartaSessao = new LocalDate(2014, 8, 13);
 		
 		Espetaculo espetaculo = new Espetaculo();
 		List<Sessao> sessoesCriadas = espetaculo.criaSessoes(primeiraSessao, quartaSessao, horarioSessao, Periodicidade.DIARIA);
 		
-		Assert.assertEquals(primeiraSessao, sessoesCriadas.get(0).getInicio().toLocalDate());
-		Assert.assertEquals(segundaSessao, sessoesCriadas.get(1).getInicio().toLocalDate());
-		Assert.assertEquals(terceiraSessao, sessoesCriadas.get(2).getInicio().toLocalDate());
-		Assert.assertEquals(quartaSessao, sessoesCriadas.get(3).getInicio().toLocalDate());
+		Assert.assertEquals(new LocalDate(2014, 8, 10), sessoesCriadas.get(0).getInicio().toLocalDate());
+		Assert.assertEquals(new LocalDate(2014, 8, 11), sessoesCriadas.get(1).getInicio().toLocalDate());
+		Assert.assertEquals(new LocalDate(2014, 8, 12), sessoesCriadas.get(2).getInicio().toLocalDate());
+		Assert.assertEquals(new LocalDate(2014, 8, 13), sessoesCriadas.get(3).getInicio().toLocalDate());
 	}
 	
 	@Test
 	public void deveCriarUmaSessaoPorSemana(){
 		
 		LocalDate inicio = new LocalDate(2014, 8, 10);
-		LocalDate fim = inicio.plusDays(13);
+		LocalDate fim = inicio.plusDays(20);
 		LocalTime horario = new LocalTime(20, 0);
 		
 		Espetaculo espetaculo = new Espetaculo();
